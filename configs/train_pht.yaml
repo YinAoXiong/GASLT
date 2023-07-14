@@ -1,0 +1,132 @@
+name: sign_experiment
+data:
+    data_path: ./data/pht/data/
+    version: phoenix_2014_trans
+    sgn: sign
+    txt: text
+    gls: gloss
+    train: phoenix14t.pami0.train
+    dev: phoenix14t.pami0.dev
+    test: phoenix14t.pami0.test
+    feature_size: 1024
+    level: bpe
+    sp_model_path: ./data/pht/bpe/de.wiki.bpe.vs25000.model
+    txt_lowercase: true
+    max_sent_length: 400
+    random_train_subset: -1
+    random_dev_subset: -1
+testing:
+    recognition_beam_sizes:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+        - 9
+        - 10
+    translation_beam_sizes:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+        - 9
+        - 10
+    translation_beam_alphas:
+        - -1
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+training:
+    reset_best_ckpt: false
+    reset_scheduler: false
+    reset_optimizer: false
+    random_seed: 42
+    model_dir: "./results/pht"
+    recognition_loss_weight: 0.0
+    translation_loss_weight: 1.0
+    eval_metric: bleu
+    optimizer: adam
+    learning_rate: 0.0005
+    batch_size: 32
+    num_valid_log: 5
+    epochs: 5000000
+    early_stopping_metric: eval_metric
+    batch_type: sentence
+    translation_normalization: batch
+    eval_recognition_beam_size: 1
+    eval_translation_beam_size: 10
+    eval_translation_beam_alpha: -1
+    overwrite: true
+    shuffle: true
+    use_cuda: true
+    translation_max_output_length: 40
+    keep_last_ckpts: 1
+    batch_multiplier: 1
+    logging_freq: 100
+    validation_freq: 100
+    betas:
+        - 0.9
+        - 0.998
+    scheduling: plateau
+    learning_rate_min: 1.0e-07
+    weight_decay: 0.001
+    patience: 9
+    decrease_factor: 0.5
+    label_smoothing: 0.4
+    early_stop: false
+model:
+    initializer: xavier
+    bias_initializer: zeros
+    init_gain: 1.0
+    embed_initializer: xavier
+    embed_init_gain: 1.0
+    tied_softmax: false
+    word_vectors: ./data/pht/bpe/de.wiki.bpe.vs25000.d300.w2v.txt
+    sim_name_to_video_id_json: ./data/pht/sim/name_to_video_id.json
+    sim_video_cos_sim: ./data/pht/sim/cos_sim.pkl
+    max_query_embedding: 100
+    sim_loss_weight: 10
+    sentence_embedding_mod: mean
+    encoder:
+        type: deformable_transformer
+        attentions_type: local
+        num_layers: 2
+        num_heads: 8
+        num_keys:
+            - 7
+            - 7
+            # - 9
+        embeddings:
+            embedding_dim: 512
+            scale: false
+            dropout: 0.1
+            norm_type: batch
+            activation_type: softsign
+        hidden_size: 512
+        ff_size: 2048
+        dropout: 0.5
+        query_nb: 3
+        query_type: not
+    decoder:
+        type: transformer
+        num_layers: 2
+        num_heads: 8
+        embeddings:
+            embedding_dim: 300
+            scale: false
+            dropout: 0.1
+            norm_type: batch
+            activation_type: softsign
+        hidden_size: 512
+        ff_size: 2048
+        dropout: 0.5
