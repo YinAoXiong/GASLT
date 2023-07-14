@@ -88,3 +88,4 @@ Our codes are based on the following repos:
 * [WLASL](https://github.com/dxli94/WLASL)
 * [SP-10](https://github.com/MLSLT/SP-10)
 * [TSPNet](https://github.com/verashira/TSPNet)
+* [bpemb](https://github.com/bheinzerling/bpemb)
