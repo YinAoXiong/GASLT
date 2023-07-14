@@ -14,6 +14,11 @@ conda activate gaslt
 ## Datasets
 
 For the RWTH-PHOENIX-Weather 2014 T dataset, we provide processed data for download. 
+
+* [onedrive download link](https://zjueducn-my.sharepoint.com/:u:/g/personal/yinaoxiong_zju_edu_cn/EYiItnOUUxhCnrIRduhYh3oBsGYlEUO_-heZAFzr4amzQw?e=JyHmRE)
+
+Since the public link will expire after a period of time, if the link expires, please contact me via email yinaoxiong@zju.edu.cn to get a new access link.
+
 For other datasets, please refer to the following steps for processing because we do not have permission to distribute them.
 
 ### Step 1: Download the raw data:
