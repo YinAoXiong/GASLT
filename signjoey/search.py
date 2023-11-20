@@ -381,7 +381,7 @@ def beam_search(
 
         # append latest prediction
         alive_seq = torch.cat(
-            [alive_seq.index_select(0, select_indices), topk_ids.view(-1, 1)], -1
+            [alive_seq.index_select(0, select_indices.long()), topk_ids.view(-1, 1)], -1
         )  # batch_size*k x hyp_len
 
         is_finished = topk_ids.eq(eos_index)
@@ -433,12 +433,12 @@ def beam_search(
 
         # reorder indices, outputs and masks
         select_indices = batch_index.view(-1)
-        encoder_output = encoder_output.index_select(0, select_indices)
+        encoder_output = encoder_output.index_select(0, select_indices.long())
         if encoder_output2 is not None:
             encoder_output2 = encoder_output2.index_select(0, select_indices)
-        src_mask = src_mask.index_select(0, select_indices)
+        src_mask = src_mask.index_select(0, select_indices.long())
         if src_mask2 is not None:
-            src_mask2 = src_mask2.index_select(0, select_indices)
+            src_mask2 = src_mask2.index_select(0, select_indices.long())
 
         if hidden is not None and not transformer:
             if isinstance(hidden, tuple):
